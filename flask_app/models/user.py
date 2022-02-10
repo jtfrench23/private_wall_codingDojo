@@ -16,8 +16,10 @@ class User:
 #CREATE
     @classmethod
     def save(cls, data ):
-        query = "INSERT INTO users ( first_name , last_name , email , created_at, updated_at ) VALUES ( %(fname)s , %(lname)s , %(email)s , NOW() , NOW() );"
-        return connectToMySQL('users_schema').query_db( query, data )
+        query = """INSERT INTO users 
+        ( first_name , last_name , email, password) 
+        VALUES ( %(fname)s , %(lname)s , %(email)s, %(password)s );"""
+        return connectToMySQL('private_wall_schema').query_db( query, data )
 
 
 
@@ -25,7 +27,7 @@ class User:
     @classmethod
     def get_all(cls):
         query= "SELECT * FROM users;"
-        result= connectToMySQL('users_schema').query_db(query)
+        result= connectToMySQL('private_wall_schema').query_db(query)
         users=[]
         for user in result:
             users.append(cls(user))
@@ -33,7 +35,7 @@ class User:
     @classmethod
     def lastIndex(cls):
         query="SELECT * FROM users WHERE id=(SELECT max(id) FROM users);"
-        user=connectToMySQL('users_schema').query_db(query)
+        user=connectToMySQL('private_wall_schema').query_db(query)
         return user
 
 
@@ -48,7 +50,7 @@ class User:
         first_name=%(fname)s, 
         last_name=%(lname)s 
         WHERE id = %(id)s;"""
-        return connectToMySQL('users_schema').query_db( query, data )
+        return connectToMySQL('private_wall_schema').query_db( query, data )
 
 
 
@@ -58,7 +60,7 @@ class User:
     @classmethod
     def delete(cls, data):
         query = "DELETE FROM users WHERE id = (%(id)s);"
-        return connectToMySQL('users_schema').query_db(query, data)
+        return connectToMySQL('private_wall_schema').query_db(query, data)
 
 
 
