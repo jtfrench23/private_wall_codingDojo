@@ -8,6 +8,56 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    
+    <div class="formsContainer">
+        <div class="bg-light border-blue padding-10">
+            <h2>Register</h2>
+            <form action="register" method="post" class="form bg-light">
+                <div class="form-group row">
+                    <label>
+                        First name:
+                        <input type="text" name="first_name" id="first_name">
+                    </label>
+                    <label>
+                        Last name:
+                        <input type="text" name="last_name" id="last_name">
+                    </label>
+                </div>
+                <label>
+                    Email:
+                    <input type="email" name="email" id="email">
+                </label>
+                <label for="birthday">Birthdate:</label>
+                <input type="date" name="birthday" id="birthday">
+                <div class="form-group row">
+                    <label>
+                        Password:
+                        <input type="password" name="password" id="password">
+                    </label>
+                    <label>
+                        Confirm Password:
+                        <input type="password" name="password_confirm" id="password_confirm">
+                    </label>
+                </div>
+                <input type="submit" value="Register">
+                {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
+                    {% if messages %}                            <!-- check if there are any messages -->
+                        {% for message in messages %}            <!-- loop through the messages -->
+                            <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </form>
+        </div>
+        <div class="w-50 text-center bg-yellow border-blue">
+            <h2>Login</h2>
+            <form action="login" method="post">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password">
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
 </body>
 </html>
