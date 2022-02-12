@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Message App</title>
+</head>
+<body>
+    <div class="header">
+        <h1>CodingDojo Wall</h1>
+        <div class="user_options">
+            <p>Welcome, {{user.name}}!</p>
+            <a href="/logout">Log Out</a>
+        </div>
+    </div>
+    <div class="user_messages">
+        <h2>{{user.message_count}} Message(s) for You</h2>
+        
+    </div>
+    <div class="send_messages">
+        <h2>Send Messages</h2>
+        <p>You have sent {{user.sends}} messages so far</p>
+    </div>
+</body>
+</html>
