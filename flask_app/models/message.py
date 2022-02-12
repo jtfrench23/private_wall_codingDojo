@@ -22,6 +22,7 @@ class Message:
         (sender_id, receiver_id, content)
         VALUES (%(sender_id)s, %(receiver_id)s, %(content)s);
         """
+        user.User.update_sends(data['sender_id'])
         return connectToMySQL("private_wall_schema").query_db(query, data)
 # READ
     @classmethod
@@ -39,6 +40,14 @@ class Message:
 
 
 #DELETE
-
-
+    @classmethod
+    def delete_message(cls,id):
+        data={
+            'id':id
+        }
+        query="""
+        DELETE FROM messages
+        WHERE id=%(id)s
+        ;"""
+        return connectToMySQL("private_wall_schema").query_db(query, data)
 #STATIC

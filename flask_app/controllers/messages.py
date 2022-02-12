@@ -20,4 +20,5 @@ def new_message():
 #DELETE CONTROLLERS
 @app.route("/delete/<int:id>")
 def delete_message(id):
-    pass
+    message.Message.delete_message(id)
+    return redirect('/dashboard')

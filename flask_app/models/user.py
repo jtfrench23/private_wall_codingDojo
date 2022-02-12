@@ -14,14 +14,15 @@ class User:
         self.password=data['password']
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
+        self.send_messages=data['sent_messages']
         self.messages=[]
 
 #CREATE
     @classmethod
     def save(cls, data ):
         query = """INSERT INTO users 
-        ( first_name , last_name , email, password) 
-        VALUES ( %(first_name)s , %(last_name)s , %(email)s, %(password)s );"""
+        ( first_name , last_name , email, password, sent_messages) 
+        VALUES ( %(first_name)s , %(last_name)s , %(email)s, %(password)s, 0);"""
         return connectToMySQL('private_wall_schema').query_db( query, data )
 
 
@@ -61,18 +62,7 @@ class User:
         if len(result) < 1:
             return False
         return cls(result[0])
-    @classmethod
-    def get_sends(cls,id):
-        sends=0
-        query="""
-        SELECT * 
-        FROM messages
-        """
-        result = connectToMySQL("private_wall_schema").query_db(query)
-        for row in result:
-            if row['sender_id'] == id:
-                sends+=1
-        return sends
+   
 
 
 #UPDATE
@@ -85,6 +75,13 @@ class User:
         last_name=%(last_name)s 
         WHERE id = %(id)s;"""
         return connectToMySQL('private_wall_schema').query_db( query, data )
+    @classmethod
+    def update(cls, id):
+        query = f"""
+        UPDATE users 
+        SET sent_messages = sent_messages + 1 
+        WHERE id = {id};"""
+        return connectToMySQL('private_wall_schema').query_db( query)
 
 
 
