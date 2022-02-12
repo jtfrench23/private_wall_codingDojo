@@ -52,3 +52,10 @@ class Message:
         ;"""
         return connectToMySQL("private_wall_schema").query_db(query, data)
 #STATIC
+    @staticmethod
+    def validate_message( message ):
+        is_valid = True
+        if len(message['content'])<5:
+            flash('message must be at least 5 characters')
+            is_valid=False
+        return is_valid

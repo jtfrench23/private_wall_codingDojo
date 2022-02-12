@@ -27,6 +27,13 @@
             {% endfor %}
         </div>
         <div class="send_messages">
+            {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
+                    {% if messages %}                            <!-- check if there are any messages -->
+                        {% for message in messages %}            <!-- loop through the messages -->
+                            <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
             <h2>Send Messages</h2>
             <p>You have sent {{user.send_messages}} messages so far</p>
             {% for person in all_users %}

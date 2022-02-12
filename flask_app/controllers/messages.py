@@ -9,6 +9,9 @@ from flask_app.models import message
 # CREATE CONTROLLERS
 @app.route("/create_message", methods=["POST"])
 def new_message():
+    if not message.Message.validate_message(request.form):
+        # we redirect to the template with the form.
+        return redirect('/dashboard')
     message.Message.create_message(request.form)
     return redirect("/dashboard")
 
