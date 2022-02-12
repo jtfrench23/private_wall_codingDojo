@@ -1,6 +1,6 @@
 from crypt import methods
 from flask_app import app
-from flask import render_template, redirect, request, session, flash
+from flask import render_template, redirect, request, session, flash, jsonify
 #import model that you need below
 from flask_app.models import user
 from flask_bcrypt import Bcrypt
@@ -35,6 +35,8 @@ def index():
 def dashboard():
     if "user_id" not in session:
         return redirect("/")
+    if "count" not in session:
+        session["count"]=0
     person= user.User.get_by_email(session['user_email'])
     all_users= user.User.get_all()
     message_count=len(person.messages)
@@ -61,8 +63,12 @@ def login():
     return redirect("/dashboard")
 @app.route('/danger')
 def danger():
+    session['count']+=1
+    if session['count']==2:
+        return redirect('/logout')
+    ip_addr = request.remote_addr
+    return render_template('danger.html', ip_addr=ip_addr) 
 
-    return render_template('danger.html')    
 
 #UPDATE
 
