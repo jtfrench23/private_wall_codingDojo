@@ -10,6 +10,7 @@ def register():
         # we redirect to the template with the form.
         return redirect('/')
     # ... do other things
+    user.User.save(request.form)
     return redirect('/dashboard')
 
 
@@ -18,6 +19,11 @@ def register():
 def index():
     
     return render_template("index.html")
+@app.route("/dashboard")
+def dashboard():
+    person = user.User.lastIndex()
+    print(person)
+    return render_template("dashboard.html", user=person)
 
 #UPDATE
 

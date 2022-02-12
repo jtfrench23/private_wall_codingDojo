@@ -12,13 +12,15 @@ class User:
         self.email= data['email']
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
+        self.sends=0
+        self.messages=[]
 
 #CREATE
     @classmethod
     def save(cls, data ):
         query = """INSERT INTO users 
         ( first_name , last_name , email, password) 
-        VALUES ( %(fname)s , %(lname)s , %(email)s, %(password)s );"""
+        VALUES ( %(first_name)s , %(last_name)s , %(email)s, %(password)s );"""
         return connectToMySQL('private_wall_schema').query_db( query, data )
 
 
@@ -35,7 +37,7 @@ class User:
     @classmethod
     def lastIndex(cls):
         query="SELECT * FROM users WHERE id=(SELECT max(id) FROM users);"
-        user=connectToMySQL('private_wall_schema').query_db(query)
+        user=(connectToMySQL('private_wall_schema').query_db(query))[0]
         return user
 
 
@@ -47,8 +49,8 @@ class User:
         query = """
         UPDATE users 
         SET email = %(email)s, 
-        first_name=%(fname)s, 
-        last_name=%(lname)s 
+        first_name=%(first_name)s, 
+        last_name=%(last_name)s 
         WHERE id = %(id)s;"""
         return connectToMySQL('private_wall_schema').query_db( query, data )
 
@@ -77,10 +79,10 @@ class User:
             if user['email']== email.email:
                 flash("This email is taken")
                 is_valid= False
-        if len(user['fname']) < 2:
+        if len(user['first_name']) < 2:
             flash("First name must be at least 2 characters.")
             is_valid = False
-        if len(user['lname']) < 2:
+        if len(user['last_name']) < 2:
             flash("last name must be at least 2 characters.")
             is_valid = False
         if len(user['password']) < 8:
