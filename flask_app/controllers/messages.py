@@ -23,5 +23,7 @@ def new_message():
 #DELETE CONTROLLERS
 @app.route("/delete/<int:id>")
 def delete_message(id):
+    if not message.Message.validate_delete(id, session['id']):
+        return redirect('/danger')
     message.Message.delete_message(id)
     return redirect('/dashboard')

@@ -30,7 +30,7 @@ class User:
 #READ
     @classmethod
     def get_all(cls):
-        query= "SELECT * FROM users;"
+        query= "SELECT * FROM users ORDER BY users.last_name ASC;"
         result= connectToMySQL('private_wall_schema').query_db(query)
         users=[]
         for user in result:

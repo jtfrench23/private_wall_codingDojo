@@ -20,6 +20,7 @@ class Message:
         age=now-self.created_at
         if age.days>0:
             return f"{age.days} days ago"
+            # math.floor(age.total_seconds()/60) converts the seconds into minutes, if over 60 minutes we have at least one hour
         elif(math.floor(age.total_seconds()/60))>=60:
             return f"{math.floor(age.total_seconds()/60/60)} hours ago"
         elif age.total_seconds()>=60:
@@ -48,6 +49,17 @@ class Message:
         WHERE receiver_id=%(id)s;
         """
         return connectToMySQL("private_wall_schema").query_db(query, data)
+    @classmethod
+    def get_message_by_id(cls, id):
+        data={'id':id}
+        query ="""
+        SELECT *
+        FROM messages
+        WHERE id=%(id)s;
+        """
+        result=connectToMySQL("private_wall_schema").query_db(query, data)
+        message=cls(result[0])
+        return message.receiver_id
 #UPDATE
 
 
@@ -68,5 +80,12 @@ class Message:
         is_valid = True
         if len(message['content'])<5:
             flash('message must be at least 5 characters')
+            is_valid=False
+        return is_valid
+    @staticmethod
+    def validate_delete( message_id, user_id ):
+        is_valid = True
+        id=Message.get_message_by_id(message_id)
+        if id!=user_id:
             is_valid=False
         return is_valid

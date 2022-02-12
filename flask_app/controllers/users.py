@@ -58,7 +58,11 @@ def login():
     session['user_name']= user_in_db.first_name
     session['user_email']=user_in_db.email
     # never render on a post!!!
-    return redirect("/dashboard")    
+    return redirect("/dashboard")
+@app.route('/danger')
+def danger():
+
+    return render_template('danger.html')    
 
 #UPDATE
 
