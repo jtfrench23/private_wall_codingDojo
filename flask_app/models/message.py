@@ -24,8 +24,17 @@ class Message:
         """
         return connectToMySQL("private_wall_schema").query_db(query, data)
 # READ
-
-
+    @classmethod
+    def get_all_for_user(cls, id):
+        data={
+            'id':id
+        }
+        query ="""
+        SELECT *
+        FROM messages
+        WHERE receiver_id=%(id)s;
+        """
+        return connectToMySQL("private_wall_schema").query_db(query, data)
 #UPDATE
 
 

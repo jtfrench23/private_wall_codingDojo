@@ -36,8 +36,11 @@ def dashboard():
     if "user_id" not in session:
         return redirect("/")
     person= user.User.get_by_email(session['user_email'])
+    all_users= user.User.get_all()
+    message_count=len(person.messages)
+    sends=user.User.get_sends(person.id)
     print(person)
-    return render_template("dashboard.html", user=person)
+    return render_template("dashboard.html", user=person, all_users=all_users, message_count=message_count, sends=sends)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -62,3 +65,7 @@ def login():
 
 
 #DELETE
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")

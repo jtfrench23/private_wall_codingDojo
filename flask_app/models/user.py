@@ -2,6 +2,7 @@ from flask_app.config.mysqlconnection import connectToMySQL
 import re
 from flask import flash
 from datetime import date
+from flask_app.models import message
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 
 class User:
@@ -13,8 +14,6 @@ class User:
         self.password=data['password']
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
-        self.sends=0
-        self.message_count=0
         self.messages=[]
 
 #CREATE
@@ -46,8 +45,34 @@ class User:
         # Didn't find a matching user
         if len(result) < 1:
             return False
+        user=cls(result[0])
+        messages = message.Message.get_all_for_user(user.id)
+        for note in messages:
+            user.messages.append(message.Message(note))
+        return user
+    @classmethod
+    def get_by_id(cls, id):
+        data={
+            'id':id
+        }
+        query = "SELECT * FROM users WHERE id = %(id)s;"
+        result = connectToMySQL("private_wall_schema").query_db(query,data)
+        # Didn't find a matching user
+        if len(result) < 1:
+            return False
         return cls(result[0])
-
+    @classmethod
+    def get_sends(cls,id):
+        sends=0
+        query="""
+        SELECT * 
+        FROM messages
+        """
+        result = connectToMySQL("private_wall_schema").query_db(query)
+        for row in result:
+            if row['sender_id'] == id:
+                sends+=1
+        return sends
 
 
 #UPDATE
