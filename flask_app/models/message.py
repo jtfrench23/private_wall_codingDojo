@@ -1,7 +1,8 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 import re
 from flask import flash
-from datetime import date
+from datetime import datetime
+import math
 from flask_app.models import user
 
 
@@ -14,7 +15,17 @@ class Message:
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
         self.sender_name=user.User.get_name_by_id(data['sender_id'])
-
+    def time_span(self):
+        now=datetime.now()
+        age=now-self.created_at
+        if age.days>0:
+            return f"{age.days} days ago"
+        elif(math.floor(age.total_seconds()/60))>=60:
+            return f"{math.floor(age.total_seconds()/60/60)} hours ago"
+        elif age.total_seconds()>=60:
+            return f"{math.floor(age.total_seconds()/60)} minutes ago"
+        else:
+            return f"{math.floor(age.total_seconds())} seconds ago "
 # CREATE
     @classmethod
     def create_message(cls, data):

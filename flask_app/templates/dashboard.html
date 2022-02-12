@@ -20,7 +20,7 @@
             <h2>{{message_count}} Message(s) for You</h2>
             {% for message in user.messages %}
                 <div class="flex">
-                    <h3>{{message.sender_name}} said:</h3>
+                    <h3>{{message.sender_name}} said {{message.time_span()}}:</h3>
                     <p>{{message.content}}</p>
                     <a href="/delete/{{message.id}}"> Delete Message </a>
                 </div>
