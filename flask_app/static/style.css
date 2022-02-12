@@ -1,0 +1,17 @@
+.flex{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.header{
+    justify-content: space-between;
+    padding: 10px 0px 15px 0px;
+    border-bottom: 5px solid black;
+    width: 90vw;
+    margin: 0px;
+}
+.space-around{
+    justify-content: space-around;
+    width: 90vw;
+    
+}
