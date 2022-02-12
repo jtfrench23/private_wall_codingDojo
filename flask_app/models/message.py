@@ -13,6 +13,7 @@ class Message:
         self.content=data['content']
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
+        self.sender_name=user.User.get_name_by_id(data['sender_id'])
 
 # CREATE
     @classmethod

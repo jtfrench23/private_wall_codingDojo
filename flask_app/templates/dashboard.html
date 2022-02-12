@@ -20,6 +20,7 @@
             <h2>{{message_count}} Message(s) for You</h2>
             {% for message in user.messages %}
                 <div class="flex">
+                    <h3>{{message.sender_name}} said:</h3>
                     <p>{{message.content}}</p>
                     <a href="/delete/{{message.id}}"> Delete Message </a>
                 </div>
@@ -27,15 +28,15 @@
         </div>
         <div class="send_messages">
             <h2>Send Messages</h2>
-            <p>You have sent {{sends}} messages so far</p>
+            <p>You have sent {{user.send_messages}} messages so far</p>
             {% for person in all_users %}
                 {% if person.id == user.id %}
                     {{pass}}
                 {% else %}
-                    <form action="create_message" method="post" class="flex">
+                    <form action="create_message" method="post" class="flex bottom-margin">
                         <input type="hidden" name="sender_id" value="{{user.id}}">
                         <label>
-                            {{person.first_name}}:
+                            {{person.first_name}} {{person.last_name}}:
                             <input type="hidden" name="receiver_id" value="{{person.id}}">
                         </label>
                         <textarea name="content" id="content" cols="20" rows="2"></textarea>

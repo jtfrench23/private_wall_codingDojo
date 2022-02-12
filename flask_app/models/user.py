@@ -62,7 +62,18 @@ class User:
         if len(result) < 1:
             return False
         return cls(result[0])
-   
+    @classmethod
+    def get_name_by_id(cls, id):
+        data={
+            'id':id
+        }
+        query = "SELECT * FROM users WHERE id = %(id)s;"
+        result = connectToMySQL("private_wall_schema").query_db(query,data)
+        # Didn't find a matching user
+        if len(result) < 1:
+            return False
+        name = f"{cls(result[0]).first_name} {cls(result[0]).last_name}"
+        return name
 
 
 #UPDATE
@@ -76,7 +87,7 @@ class User:
         WHERE id = %(id)s;"""
         return connectToMySQL('private_wall_schema').query_db( query, data )
     @classmethod
-    def update(cls, id):
+    def update_sends(cls, id):
         query = f"""
         UPDATE users 
         SET sent_messages = sent_messages + 1 
