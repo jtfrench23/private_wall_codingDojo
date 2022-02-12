@@ -10,9 +10,11 @@ class User:
         self.first_name=data['first_name']
         self.last_name= data['last_name']
         self.email= data['email']
+        self.password=data['password']
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
         self.sends=0
+        self.message_count=0
         self.messages=[]
 
 #CREATE
@@ -35,11 +37,16 @@ class User:
             users.append(cls(user))
         return users
     @classmethod
-    def lastIndex(cls):
-        query="SELECT * FROM users WHERE id=(SELECT max(id) FROM users);"
-        user=(connectToMySQL('private_wall_schema').query_db(query))[0]
-        return user
-
+    def get_by_email(cls,email):
+        data={
+            'email': email
+        }
+        query = "SELECT * FROM users WHERE email = %(email)s;"
+        result = connectToMySQL("private_wall_schema").query_db(query,data)
+        # Didn't find a matching user
+        if len(result) < 1:
+            return False
+        return cls(result[0])
 
 
 
